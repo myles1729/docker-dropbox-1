@@ -52,14 +52,6 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FC918B335044912E \
  && apt-get autoclean -y && apt-get autoremove -y \
  && rm -rf /var/lib/apt/lists/*
 
-RUN curl --location https://github.com/dark/dropbox-filesystem-fix/archive/master.zip > /tmp/dropbox-filesystem-fix.zip \
- && unzip /tmp/dropbox-filesystem-fix.zip -d /opt \
- && rm /tmp/dropbox-filesystem-fix.zip \
- && mv /opt/dropbox-filesystem-fix-master/ /opt/dropbox-filesystem-fix/ \
- && cd /opt/dropbox-filesystem-fix/ \
- && make \
- && chmod +x /opt/dropbox-filesystem-fix/dropbox_start.py
-
 # Dropbox insists on downloading its binaries itself via 'dropbox start -i'
 RUN echo "y" | gosu dropbox dropbox start -i
 
@@ -83,4 +75,4 @@ COPY docker-entrypoint.sh /
 
 # Set entrypoint and command
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/opt/dropbox-filesystem-fix/dropbox_start.py"]
+CMD ["/opt/dropbox/bin/dropboxd"]
