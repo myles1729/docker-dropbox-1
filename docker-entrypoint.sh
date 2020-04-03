@@ -77,14 +77,8 @@ fi
 echo ""
 umask 002
 
-echo "Patching dropbox_start.py for updated dropboxd path"
-sed -i "s:~/.dropbox-dist/dropboxd:/opt/dropbox/bin/dropboxd:g" /opt/dropbox-filesystem-fix/dropbox_start.py
-sed -i "s:/usr/bin/python:$(which python3):g" /opt/dropbox-filesystem-fix/dropbox_start.py
-
-echo ""
-
 echo "Starting dropboxd ($(cat /opt/dropbox/bin/VERSION))..."
-gosu dropbox /opt/dropbox-filesystem-fix/dropbox_start.py
+gosu dropbox /opt/dropbox/bin/dropboxd
 export DROPBOX_PID=$(pidof dropbox)
 trap "kill -SIGQUIT ${DROPBOX_PID}" INT
 
